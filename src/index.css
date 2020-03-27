@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css?family=Laila');
+
+html, body {
+  font-family: 'Laila', serif;
+  min-width: 360px;
+}
+
+/*@font-face {*/
+/*    font-family: 'Pacifico';*/
+/*    font-style: normal;*/
+/*    font-weight: 400;*/
+/*    src: local('Pacifico Regular'), local('Pacifico-Regular'), url(https://fonts.gstatic.com/s/pacifico/v12/FwZY7-Qmy14u9lezJ-6H6MmBp0u-.woff2) format('woff2');*/
+/*    font-display: swap;*/
+/*}*/
+
+/* fallback */
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/materialicons/v43/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
