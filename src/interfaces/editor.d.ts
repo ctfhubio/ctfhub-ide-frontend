@@ -9,4 +9,5 @@ export interface EditorState {
   ideMode: string
   autocomplete: boolean
   code: string
+  running: boolean
 }
