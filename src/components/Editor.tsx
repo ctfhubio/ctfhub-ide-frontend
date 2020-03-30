@@ -18,9 +18,10 @@ import 'ace-builds/src-noconflict/theme-github';
 import './Editor.css';
 
 import { Languages } from '../interfaces/languages';
-import { EditorState } from '../interfaces/editor';
+import { IdeSubmissionResponse, IdeResponse } from '../interfaces/ide';
+import { EditorState, EditorProps } from '../interfaces/editor';
 
-class Editor extends React.Component<any, EditorState> implements React.ComponentLifecycle<any, EditorState> {
+class Editor extends React.Component<EditorProps, EditorState> implements React.ComponentLifecycle<EditorProps, EditorState> {
   selectedLangLocalstorageKey: string;
 
   constructor(props: any) {
@@ -115,7 +116,7 @@ class Editor extends React.Component<any, EditorState> implements React.Componen
     }))
   };
 
-  _pollForCodeResponse = async (callbackUrl: string): Promise<any> => {
+  _pollForCodeResponse = async (callbackUrl: string): Promise<IdeResponse> => {
     try {
       for (let pollingLimit = 0; pollingLimit < 20; ++pollingLimit) {
         const statusResponse = await this._checkCodeExecutionStatus(callbackUrl);
@@ -184,9 +185,10 @@ class Editor extends React.Component<any, EditorState> implements React.Componen
         source: this.state.code,
         stdin: this.props.stdin || ''
       })
-      .then(async (response) => {
-        const body = response.data || {};
-        const callbackUrl = body.data['callbackUrl'];
+      .catch(() => Promise.reject('SUBMISSION_API_CALL_FAILURE'))
+      .then(async response => {
+        const body = (response.data || {}) as IdeSubmissionResponse;
+        const callbackUrl = body.data.callbackUrl;
 
         if (! (response.status === 202 && body.status === 'success' && body.data && callbackUrl)) {
           return Promise.reject('SUBMISSION_FAILURE');
@@ -195,14 +197,9 @@ class Editor extends React.Component<any, EditorState> implements React.Componen
         return callbackUrl;
       })
       .then(this._pollForCodeResponse)
-      .then(data => {
-        // TODO: Pass data to prop.
-      })
-      .catch(err => {
-        // TODO: Pass error to props
-        console.error(err)
-      })
-      .finally(() => this.setState({ running: false }))
+      .then(this.props.codeExecutionSuccessHandler)
+      .catch(this.props.codeExecutionErrorHandler)
+      .finally(() => this.setState({ running: false }));
   }
 
   render(): React.ReactElement<any, string | React.JSXElementConstructor<any>> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
