@@ -1,0 +1,39 @@
+.ide-header-container {
+  background-color: #ff8a65;
+  background-image: linear-gradient(90deg,#ff8a00,#e52e71);
+  display: block;
+  padding-top: .5rem;
+}
+
+.ide-header {
+  display: flex;
+  justify-content: space-between;
+  min-height: 60px;
+  align-items: center;
+  color: white;
+  background-color: #263238;
+  width: 100% !important;
+  border-top-left-radius: 40px;
+  padding: .5rem 2rem .5rem 3rem;
+}
+
+.ide-options {
+  display: flex;
+  width: 80%;
+}
+
+.ide-options div {
+  margin-right: 1rem;
+  align-self: center;
+  width: max-content;
+}
+
+select {
+  width: auto;
+  height: 2rem;
+}
+
+.btn-run {
+  padding: 0 3rem;
+  background-color: #f4511e !important;
+}
