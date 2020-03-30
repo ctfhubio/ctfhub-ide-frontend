@@ -1,9 +1,9 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog } from '@fortawesome/free-solid-svg-icons';
-import AceEditor from 'react-ace';
 import axios, { AxiosResponse } from 'axios';
 
+import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-c_cpp';
 import 'ace-builds/src-noconflict/mode-python';
 import 'ace-builds/src-noconflict/mode-javascript';
@@ -24,7 +24,7 @@ import { EditorState, EditorProps } from '../interfaces/editor';
 class Editor extends React.Component<EditorProps, EditorState> implements React.ComponentLifecycle<EditorProps, EditorState> {
   selectedLangLocalstorageKey: string;
 
-  constructor(props: any) {
+  constructor(props: Readonly<EditorProps>) {
     super(props);
 
     this.selectedLangLocalstorageKey = 'selected_lang';
@@ -251,7 +251,8 @@ class Editor extends React.Component<EditorProps, EditorState> implements React.
               enableLiveAutocompletion: this.state.autocomplete,
               cursorStyle: "smooth",
               fontFamily: 'source-code-pro, Menlo, Monaco, Consolas, "Courier New" monospace',
-              useElasticTabstops: true
+              useElasticTabstops: true,
+              useWorker: false
             }}
             value={ this.state.code }
             onChange={ this.handleCodeChange }
