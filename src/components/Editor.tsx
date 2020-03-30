@@ -44,6 +44,15 @@ class Editor extends React.Component<any, EditorState> implements React.Componen
     this.handleCodeSubmission = this.handleCodeSubmission.bind(this);
   }
 
+  componentDidMount(): void {
+    this.fetchLanguages().then(availableLanguages => this.setState({
+      availableLanguages,
+      selectedLanguage: this._getIdeDefaultLanguage(availableLanguages)
+    }, this._updateIdeProps));
+
+    window.addEventListener('beforeunload', this._saveCodeInLocalStorage);
+  }
+
   _getIdeDefaultLanguage = (availableLanguages: Languages) => {
     let languageKey = localStorage.getItem(this.selectedLangLocalstorageKey);
     const availableLanguageKeys = Object.keys(availableLanguages);
@@ -138,13 +147,6 @@ class Editor extends React.Component<any, EditorState> implements React.Componen
     localStorage.setItem(this._getCodeLocalstorageKey(), this.state.code)
   };
 
-  componentDidMount(): void {
-    this.fetchLanguages().then(availableLanguages => this.setState({
-      availableLanguages,
-      selectedLanguage: this._getIdeDefaultLanguage(availableLanguages)
-    }, this._updateIdeProps));
-  }
-
   async fetchLanguages(): Promise<Languages> {
     return {
       'c': {
@@ -169,7 +171,7 @@ class Editor extends React.Component<any, EditorState> implements React.Componen
   }
 
   handleCodeChange(code: string) {
-    this.setState({ code }, this._saveCodeInLocalStorage);
+    this.setState({ code });
   }
 
   handleCodeSubmission(event: React.MouseEvent<HTMLButtonElement>) {
