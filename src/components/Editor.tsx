@@ -169,6 +169,7 @@ class Editor extends React.Component<EditorProps, EditorState> implements React.
   handleLanguageChange(event: React.ChangeEvent<HTMLSelectElement>) {
     this.setState({ selectedLanguage: event.target.value }, this._updateIdeProps);
     localStorage.setItem(this.selectedLangLocalstorageKey, event.target.value);
+    this._saveCodeInLocalStorage();
   }
 
   handleCodeChange(code: string) {
